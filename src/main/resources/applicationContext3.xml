@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--配置目标类-->
+    <bean id="userDao" class="com.jncm.principle.aop.UserDaoImpl"/>
+    <bean id="productDao" class="com.jncm.principle.aop.ProductDao"/>
+
+    <!--配置通知-->
+    <bean id="myBeforeAdvice" class="com.jncm.principle.aop.MyBeforeAdvice"/>
+    <bean id="myAroundAdvice" class="com.jncm.principle.aop.MyAroundAdvice"/>
+
+    <!--配置切面-->
+    <bean id="myAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <!--正则表达式    .任意字符   *任意次数-->
+        <property name="pattern" value="com\.jncm\.principle\.aop\.ProductDao\.save"/>
+        <property name="advice" ref="myAroundAdvice"/>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+        <property name="optimize" value="true"/>
+    </bean>
+</beans>
